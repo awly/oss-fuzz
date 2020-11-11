@@ -24,9 +24,13 @@ function compile_fuzzer {
   $CXX $CXXFLAGS $LIB_FUZZING_ENGINE $fuzzer.a -o $OUT/$fuzzer
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> [teleport] Initial integration
+=======
+
+>>>>>>> Minor update to run tests again
 mkdir -p $GOPATH/src/github.com/gravitational
 cd $GOPATH/src/github.com/gravitational
 git clone https://github.com/gravitational/teleport.git
