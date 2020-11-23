@@ -1,8 +1,9 @@
 homepage: "https://github.com/google/flatbuffers"
 language: c++
-primary_contact: ""
+primary_contact: "wvo@google.com"
 auto_ccs:
   - "Adam@adalogics.com"
+  - "vglavnyy@gmail.com"
 sanitizers:
   - address
   - memory
