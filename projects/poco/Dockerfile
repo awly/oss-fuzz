@@ -1,4 +1,3 @@
-#/bin/bash -eu
 # Copyright 2020 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +14,8 @@
 #
 ################################################################################
 
-
-mkdir -p $GOPATH/src/github.com/gravitational
-cd $GOPATH/src/github.com/gravitational
-git clone https://github.com/gravitational/teleport.git
-
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzParseProxyJump utils_fuzz
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzNewExpression parse_fuzz
+FROM gcr.io/oss-fuzz-base/base-builder
+RUN apt-get update && apt-get install -y openssl libssl-dev git make cmake libssl-dev 
+RUN git clone --depth 1 -b master https://github.com/pocoproject/poco
+WORKDIR $SRC/
+COPY build.sh $SRC/
