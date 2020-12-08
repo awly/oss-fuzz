@@ -44,4 +44,4 @@ RUN wget https://sourceforge.net/projects/boost/files/boost/1.70.0/boost_1_70_0.
 RUN git clone --depth 1 https://github.com/PointCloudLibrary/pcl
 
 WORKDIR $SRC/
-COPY build.sh $SRC/
+COPY $SRC/pcl/test/fuzz/build.sh $SRC/build.sh
