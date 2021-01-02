@@ -1,5 +1,5 @@
-#/bin/bash -eu
-# Copyright 2020 Google Inc.
+#!/bin/bash -eu
+# Copyright 2018 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,22 @@
 #
 ################################################################################
 
+# Build spdk
+cd $SRC/spdk
+export LDFLAGS="${CFLAGS}"
+./scripts/pkgdep.sh
+./configure --without-shared --without-isal
+make -j$(nproc)
 
-mkdir -p $GOPATH/src/github.com/gravitational
-cd $GOPATH/src/github.com/gravitational
-git clone https://github.com/gravitational/teleport.git
+# Build fuzzers
+cd $SRC/spdk/test/fuzz
 
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzParseProxyJump utils_fuzz
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzNewExpression parse_fuzz
+$CXX $CXXFLAGS -I/src/spdk -I/src/spdk/include \
+        -fPIC -c parse_json_fuzzer.cc -o parse_json_fuzzer.o
+
+$CXX $CXXFLAGS $LIB_FUZZING_ENGINE \
+	parse_json_fuzzer.o -o $OUT/parse_json_fuzzer \
+        /src/spdk/build/lib/libspdk_env_dpdk.a \
+        /src/spdk/build/lib/libspdk_json.a \
+        ../../lib/json/json_parse.o
+

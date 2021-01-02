@@ -1,0 +1,10 @@
+homepage: "https://github.com/spdk/spdk"
+main_repo: "https://github.com/spdk/spdk"
+language: c
+primary_contact: ""
+auto_ccs:
+  - "Adam@adalogics.com"
+sanitizers:
+  - address
+  - undefined
+  - memory

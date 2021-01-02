@@ -1,5 +1,4 @@
-#/bin/bash -eu
-# Copyright 2020 Google Inc.
+# Copyright 2018 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +14,16 @@
 #
 ################################################################################
 
-
-mkdir -p $GOPATH/src/github.com/gravitational
-cd $GOPATH/src/github.com/gravitational
-git clone https://github.com/gravitational/teleport.git
-
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzParseProxyJump utils_fuzz
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzNewExpression parse_fuzz
+FROM gcr.io/oss-fuzz-base/base-builder
+RUN apt-get update && apt-get install -y make curl yasm autoconf libtool meson
+RUN git clone --depth 1 https://github.com/spdk/spdk
+RUN mkdir nasm-2.15 && cd nasm-2.15 && \
+	curl -O -L https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.xz && \
+	tar -xf nasm-2.15.05.tar.xz --strip-components=1 && \
+	./configure --prefix=/usr && \
+        make -j$(nproc) && \
+        make -j$(nproc) install 
+WORKDIR $SRC/spdk
+RUN git submodule update --init
+COPY build.sh $SRC/
+COPY parse_json_fuzzer.cc $SRC/spdk/test/fuzz/
