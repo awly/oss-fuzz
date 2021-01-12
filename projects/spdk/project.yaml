@@ -1,7 +1,7 @@
 homepage: "https://github.com/spdk/spdk"
 main_repo: "https://github.com/spdk/spdk"
 language: c
-primary_contact: ""
+primary_contact: "james.r.harris@intel.com"
 auto_ccs:
   - "Adam@adalogics.com"
 sanitizers:
