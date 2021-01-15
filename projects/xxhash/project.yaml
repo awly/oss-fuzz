@@ -8,3 +8,5 @@ sanitizers:
   - address
   - undefined
   - memory
+engines:
+  - libfuzzer
