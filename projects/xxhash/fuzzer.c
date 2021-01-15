@@ -1,5 +1,5 @@
-#/bin/bash -eu
-# Copyright 2020 Google Inc.
+/*
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,26 @@
 # limitations under the License.
 #
 ################################################################################
+*/
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+#include "xxhash.h"
 
-
-mkdir -p $GOPATH/src/github.com/gravitational
-cd $GOPATH/src/github.com/gravitational
-git clone https://github.com/gravitational/teleport.git
-
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzParseProxyJump utils_fuzz
-compile_go_fuzzer github.com/gravitational/teleport/lib/fuzz FuzzNewExpression parse_fuzz
+int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size){
+	/*if (((size) & 15)==0){
+		return 0;
+	}*/
+	
+	char *new_str = (char *)malloc(size+1);
+	if (new_str == NULL){
+		return 0;
+	}
+	memcpy(new_str, data, size);
+	new_str[size] = '\0';
+	
+	XXH64_hash_t hash = XXH64(new_str, size, NULL);
+	
+	free(new_str);
+	return 0;
+}

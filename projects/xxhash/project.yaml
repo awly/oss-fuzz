@@ -1,0 +1,10 @@
+homepage: "https://github.com/Cyan4973/xxHash"
+main_repo: "https://github.com/Cyan4973/xxHash"
+language: c
+primary_contact: ""
+auto_ccs:
+  - "Adam@adalogics.com"
+sanitizers:
+  - address
+  - undefined
+  - memory
